@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ParcingYamaha
 {
 
-    public class Rootobject
+    public class Engine
     {
         public Menudata menuData { get; set; }
         public Productdatacollection[] productDataCollection { get; set; }
@@ -15,6 +15,11 @@ namespace ParcingYamaha
         public Displacementdatacollection[] displacementDataCollection { get; set; }
         public object modelYearDataCollection { get; set; }
         public Usercontext userContext { get; set; }
+    }
+
+    public class Model
+    {
+        public Modelnamedatacollection[] modelNameDataCollection { get; set; }
     }
 
     public class Menudata
