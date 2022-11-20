@@ -8,6 +8,7 @@ using System.Reflection.PortableExecutable;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Net.WebRequestMethods;
@@ -29,21 +30,18 @@ namespace ParcingYamaha
             request.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 YaBrowser/22.11.0.2419 Yowser/2.5 Safari/537.36");
             //request.Headers.Add("", "");
 
-         
+                   
+            var response = await httpClient.SendAsync(request);
+            var answer = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(answer);
+            var engineSize=JsonConvert.DeserializeObject<Rootobject>(answer);
+            //var engineSize=JsonConvert.DeserializeObject(answer);
 
-
-            while (true)
+            foreach (var engine in engineSize.displacementDataCollection)
             {
-                string line = Console.ReadLine(); // Get string from user
-                if (line == "exit") // Check string
-                {
-                    break;
-                }
-                var response = await httpClient.SendAsync(request);
-                var answer = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(answer);
-
+                Console.WriteLine($"Номер: {engine.displacement}, объем: {engine.displacementType}, ИД продукта: {engine.productId}");
             }
+            
             
 
             Console.ReadKey();
