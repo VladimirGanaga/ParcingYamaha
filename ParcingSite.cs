@@ -10,12 +10,13 @@ using System.Threading.Tasks;
 
 namespace ParcingYamaha
 {
+    
     internal class ParcingSite 
     {
 
         public async Task ParceModelsAsync(HttpClient httpClient, SampleContext context)
         {
-
+            int count=0;
 
             var request = new HttpRequestMessage(HttpMethod.Post, "https://parts.yamaha-motor.co.jp/ypec_b2c/services/html5/product_list/");
             request.Content = new StringContent("{\"baseCode\":\"7306\",\"langId\":\"92\"}", Encoding.UTF8, "application/json");
@@ -25,7 +26,7 @@ namespace ParcingYamaha
             {
                 NullValueHandling = NullValueHandling.Ignore
             };
-            
+
 
             context.Modeldatacollection.RemoveRange(context.Modeldatacollection);
             context.SaveChanges();
@@ -73,10 +74,12 @@ namespace ParcingYamaha
                         var modelsList = JsonConvert.DeserializeObject<Modeldatacollections>(answer, jsonSettings);
                         foreach (var model in modelsList.modelDataCollection)
                         {
-                            Console.WriteLine($"год: {model.modelBaseCode}, productNo: {model.productNo}, calledCode: {model.calledCode}, modelName: {model.modelName}, colorName: {model.colorName}, modelName: {model.modelName}");
+                            count++;
+                            Console.WriteLine($"Счетчик: {count}. Год: {model.modelBaseCode}, productNo: {model.productNo}, calledCode: {model.calledCode}, modelName: {model.modelName}, colorName: {model.colorName}, modelName: {model.modelName}");
 
-
+                            
                             context.Modeldatacollection.Add(model);
+                            
 
 
                         }
@@ -88,7 +91,7 @@ namespace ParcingYamaha
 
 
             }
-            httpClient.Dispose();
+            
         }
 
     }

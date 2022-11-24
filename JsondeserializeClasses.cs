@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace ParcingYamaha
@@ -123,23 +122,72 @@ namespace ParcingYamaha
         public string? releaseYymm { get; set; }
         public string? modelComment { get; set; }
         public string? prodCategory { get; set; }
+
     }
-    public class SampleContext : DbContext
+
+    public class SelectedModel
     {
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Data Source=WIN10\\SQLEXPRESS;Database=Yamaha;Trusted_Connection=True;TrustServerCertificate=true;");
-        }
-        public SampleContext()
-        {
-            //Database.EnsureDeleted();   // удаляем бд со старой схемой
-            //Database.EnsureCreated();   // создаем бд с новой схемой
-        }
-
-        public DbSet<Modeldatacollection> Modeldatacollection { get; set; }
-        
+        public Figdatacollection[] figDataCollection { get; set; }
+        public Cataloglangdatacollection[] catalogLangDataCollection { get; set; }
+        public string catalogNo { get; set; }
     }
+
+    public class Figdatacollection
+    {
+        public string illustFileURL { get; set; }
+        public string figNo { get; set; }
+        public string figBranchNo { get; set; }
+        public string figName { get; set; }
+        public string illustNo { get; set; }
+    }
+
+    public class Cataloglangdatacollection
+    {
+        public bool selected { get; set; }
+        public string catalogLangName { get; set; }
+        public string catalogLangId { get; set; }
+    }
+
+
+    public class SelectSection
+    {
+        public Cataloglangdatacollection[] catalogLangDataCollection { get; set; }
+        public Figdatacollection[] figDataCollection { get; set; }
+        public string catalogNo { get; set; }
+    }
+
+
+
+    public class SelectParts
+    {
+        public Hotspotodatacollection[] hotspotoDataCollection { get; set; }
+        public object? notesDataCollection { get; set; }
+        public Partsdatacollection[] partsDataCollection { get; set; }
+    }
+
+    public class Hotspotodatacollection
+    {
+        public string refNo { get; set; }
+        public int startPointX { get; set; }
+        public int endPointX { get; set; }
+        public int startPointY { get; set; }
+        public int endPointY { get; set; }
+    }
+
+    public class Partsdatacollection
+    {
+        public object partNewsFileURL { get; set; }
+        public string selectableId { get; set; }
+        public string partNo { get; set; }
+        public string partName { get; set; }
+        public int quantity { get; set; }
+        public string remarks { get; set; }
+        public string appSerial { get; set; }
+        public string refNo { get; set; }
+    }
+
+
+    
 
 
     

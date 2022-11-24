@@ -26,15 +26,22 @@ namespace ParcingYamaha
 
             SampleContext context = new SampleContext();
             HttpClient httpClient = new HttpClient();
-            Console.ReadKey();
-            ParcingSite parcing = new ParcingSite();
-            await parcing.ParceModelsAsync(httpClient, context);
+            Console.WriteLine("Press 1 for run parcing all models to sql");
+            var line=Console.ReadLine();
+            if (line=="1")
+                { 
+                ParcingSite parcing = new ParcingSite();
+                await parcing.ParceModelsAsync(httpClient, context);
+                
+                }
+            Parts parts = new Parts();
+            await parts.GetParts(httpClient, context);
 
 
 
 
 
-
+            httpClient.Dispose();
 
             Console.ReadKey();
         
