@@ -12,8 +12,8 @@ using ParcingYamaha;
 namespace ParcingYamaha.Migrations
 {
     [DbContext(typeof(SampleContext))]
-    [Migration("20221123191005_222")]
-    partial class _222
+    [Migration("20221124195406_parts2")]
+    partial class parts2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,6 +85,65 @@ namespace ParcingYamaha.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Modeldatacollection");
+                });
+
+            modelBuilder.Entity("ParcingYamaha.Partsdatacollection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("appSerial")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("chapter")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("modeldatacollectionID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("partName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("partNewsFileURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("partNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("refNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("selectableId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("modeldatacollectionID");
+
+                    b.ToTable("Partsdatacollection");
+                });
+
+            modelBuilder.Entity("ParcingYamaha.Partsdatacollection", b =>
+                {
+                    b.HasOne("ParcingYamaha.Modeldatacollection", "modeldatacollection")
+                        .WithMany()
+                        .HasForeignKey("modeldatacollectionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("modeldatacollection");
                 });
 #pragma warning restore 612, 618
         }

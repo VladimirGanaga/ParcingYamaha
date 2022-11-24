@@ -161,7 +161,7 @@ namespace ParcingYamaha
     public class SelectParts
     {
         public Hotspotodatacollection[] hotspotoDataCollection { get; set; }
-        public object? notesDataCollection { get; set; }
+        public string? notesDataCollection { get; set; }
         public Partsdatacollection[] partsDataCollection { get; set; }
     }
 
@@ -175,15 +175,19 @@ namespace ParcingYamaha
     }
 
     public class Partsdatacollection
-    {
-        public object partNewsFileURL { get; set; }
+    {   
+        public int Id { get; set; }
+        public int modeldatacollectionID { get; set; }
+        public Modeldatacollection? modeldatacollection { get; set; }
+        public string? partNewsFileURL { get; set; }
         public string selectableId { get; set; }
         public string partNo { get; set; }
         public string partName { get; set; }
         public int quantity { get; set; }
-        public string remarks { get; set; }
-        public string appSerial { get; set; }
-        public string refNo { get; set; }
+        public string? remarks { get; set; }
+        public string? appSerial { get; set; }
+        public string? refNo { get; set; }
+        public string? chapter { get; set; }
     }
 
 

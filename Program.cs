@@ -9,6 +9,7 @@ using System.Reflection.PortableExecutable;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using static System.Net.Mime.MediaTypeNames;
@@ -22,27 +23,27 @@ namespace ParcingYamaha
         
         static async Task Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("Parcing Yamaha");
 
             SampleContext context = new SampleContext();
             HttpClient httpClient = new HttpClient();
-            Console.WriteLine("Press 1 for run parcing all models to sql");
-            var line=Console.ReadLine();
-            if (line=="1")
+            Console.WriteLine("Press 1 for run parcing all models to sql or press Enter to skip");
+            if (Console.ReadLine() == "1")
                 { 
                 ParcingSite parcing = new ParcingSite();
                 await parcing.ParceModelsAsync(httpClient, context);
-                
                 }
-            Parts parts = new Parts();
-            await parts.GetParts(httpClient, context);
-
-
-
-
+            Console.WriteLine("Enter model name to parce parts or press Enter key to skip");
+            string? input = Console.ReadLine();
+            if (!input.IsNullOrEmpty())
+            {
+                Parts parts = new Parts();
+                await parts.GetParts(httpClient, context, input);
+            }
 
             httpClient.Dispose();
-
+            Console.WriteLine("Press any key to close");
             Console.ReadKey();
         
 
