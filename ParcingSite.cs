@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 
 namespace ParcingYamaha
 {
-    
+    /// <summary>
+    /// Класс для парсинга всех моделей мотоциклов с сайта и сохранения в БД SQL
+    /// </summary>
     internal class ParcingSite 
     {
 

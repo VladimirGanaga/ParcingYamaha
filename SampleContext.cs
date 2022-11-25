@@ -5,8 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace ParcingYamaha
 {
+    /// <summary>
+    /// Класс контекста для работы Entity framework
+    /// </summary>
     public class SampleContext : DbContext
     {
 

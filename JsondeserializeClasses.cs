@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-
-
+/// <summary>
+///класс для десериализации получаемых данных с сайта
+/// </summary>
 namespace ParcingYamaha
 {
 
