@@ -12,8 +12,8 @@ using ParcingYamaha;
 namespace ParcingYamaha.Migrations
 {
     [DbContext(typeof(SampleContext))]
-    [Migration("20221127200315_27112022")]
-    partial class _27112022
+    [Migration("20221128190527_addChapterID")]
+    partial class addChapterID
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,6 +99,9 @@ namespace ParcingYamaha.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("chapter")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("chapterID")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("modeldatacollectionID")

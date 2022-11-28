@@ -5,7 +5,7 @@
 namespace ParcingYamaha.Migrations
 {
     /// <inheritdoc />
-    public partial class _27112022 : Migration
+    public partial class addChapterID : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -52,7 +52,8 @@ namespace ParcingYamaha.Migrations
                     remarks = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     appSerial = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     refNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    chapter = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    chapter = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    chapterID = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

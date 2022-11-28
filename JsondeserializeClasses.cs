@@ -189,11 +189,11 @@ namespace ParcingYamaha
         public string? appSerial { get; set; }
         public string? refNo { get; set; }
         public string? chapter { get; set; }
+        public string? chapterID { get; set; }
 
         public override bool Equals(object? obj)
         {
             return obj is Partsdatacollection partsdatacollection &&
-                   Id == partsdatacollection.Id &&
                    partNewsFileURL == partsdatacollection.partNewsFileURL &&
                    selectableId == partsdatacollection.selectableId &&
                    partNo == partsdatacollection.partNo &&
@@ -202,7 +202,8 @@ namespace ParcingYamaha
                    remarks == partsdatacollection.remarks &&
                    appSerial == partsdatacollection.appSerial &&
                    refNo == partsdatacollection.refNo &&
-                   chapter == partsdatacollection.chapter;
+                   chapter == partsdatacollection.chapter &&
+                   chapterID == partsdatacollection.chapterID;
         }
 
         public override int GetHashCode()
@@ -223,7 +224,7 @@ namespace ParcingYamaha
 
         public override string? ToString()
         {
-            string? result = $"modeldatacollectionID: {modeldatacollectionID}, partName: {partName}";
+            string? result = $"modeldatacollectionID: {modeldatacollectionID}, partName: {partName}, partNo: {partNo}, chapter: {chapter}, chapterID: {chapterID}";
             return result;
         }
     }

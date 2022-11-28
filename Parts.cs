@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -69,6 +70,7 @@ namespace ParcingYamaha
                             //part.modeldatacollection = dm;
                             part.modeldatacollectionID = dm.Id;
                             part.chapter = selectedModel.figName;
+                            part.chapterID = selectedModel.figNo;
                             context.Partsdatacollection.Update(part);
                             context.SaveChanges();
                         }
@@ -78,28 +80,51 @@ namespace ParcingYamaha
         }
 
 
-        public async void CheckEqualParts(SampleContext context, string desiredModel)
+        public void CheckEqualParts(SampleContext context, string desiredModel)
         {
-            List<Partsdatacollection> chekList = new List<Partsdatacollection>();
+            List<List<Partsdatacollection>> chekListAll = new List<List<Partsdatacollection>>();
+            
 
             SampleContext ctx = new SampleContext();
             var desiredModelsFromBase = ctx.Modeldatacollection.Where(dm => dm.modelName == desiredModel);
             foreach (Modeldatacollection dm in desiredModelsFromBase)
             {
                 Console.WriteLine($"Модель {dm.modelName}, Никнэйм ({dm.Id})");
+                List<Partsdatacollection> chekList = new List<Partsdatacollection>();
                 var PartsFromBase = context.Partsdatacollection.Where(pfb => pfb.modeldatacollectionID == dm.Id);
                 foreach (var part in PartsFromBase)
                 {
                     chekList.Add(part);
 
                 }
-                
+                chekListAll.Add(chekList);
 
             }
-            foreach (var part in chekList)
+            foreach (Partsdatacollection parts1 in chekListAll[0])
             {
-                Console.WriteLine(part.ToString());
+                int countTrue = 0;
+                int countFalse = 0;
+                foreach (Partsdatacollection parts2 in chekListAll[2])
+                {
+                    bool chkEql = parts1.Equals(parts2);
+                    if (chkEql)
+                    {
+                        countTrue++;
+                    } else
+                    {
+                        countFalse++;
+                        if (countFalse == 1209) 
+                        {
+                            Console.WriteLine(parts1.ToString() );   
+                        }
+                    }
+                }
+                Console.WriteLine($"True: {countTrue}, False: {countFalse}");
             }
+            //Console.WriteLine(chekListAll[0].SequenceEqual<Partsdatacollection>(chekListAll[1]));
+            //Console.WriteLine(chekListAll[0].SequenceEqual<List<Partsdatacollection>>(chekListAll[2]));
+            //Console.WriteLine(chekListAll[1].SequenceEqual<List<Partsdatacollection>>(chekListAll[2]));
+            //Console.WriteLine(chekListAll[1].SequenceEqual<List<Partsdatacollection>>(chekListAll[1]));
         }
     }
 }

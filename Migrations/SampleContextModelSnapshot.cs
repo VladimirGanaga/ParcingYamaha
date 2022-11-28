@@ -98,6 +98,9 @@ namespace ParcingYamaha.Migrations
                     b.Property<string>("chapter")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("chapterID")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("modeldatacollectionID")
                         .HasColumnType("int");
 
