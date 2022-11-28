@@ -189,6 +189,43 @@ namespace ParcingYamaha
         public string? appSerial { get; set; }
         public string? refNo { get; set; }
         public string? chapter { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Partsdatacollection partsdatacollection &&
+                   Id == partsdatacollection.Id &&
+                   partNewsFileURL == partsdatacollection.partNewsFileURL &&
+                   selectableId == partsdatacollection.selectableId &&
+                   partNo == partsdatacollection.partNo &&
+                   partName == partsdatacollection.partName &&
+                   quantity == partsdatacollection.quantity &&
+                   remarks == partsdatacollection.remarks &&
+                   appSerial == partsdatacollection.appSerial &&
+                   refNo == partsdatacollection.refNo &&
+                   chapter == partsdatacollection.chapter;
+        }
+
+        public override int GetHashCode()
+        {
+            HashCode hash = new HashCode();
+            hash.Add(Id);
+            hash.Add(partNewsFileURL);
+            hash.Add(selectableId);
+            hash.Add(partNo);
+            hash.Add(partName);
+            hash.Add(quantity);
+            hash.Add(remarks);
+            hash.Add(appSerial);
+            hash.Add(refNo);
+            hash.Add(chapter);
+            return hash.ToHashCode();
+        }
+
+        public override string? ToString()
+        {
+            string? result = $"modeldatacollectionID: {modeldatacollectionID}, partName: {partName}";
+            return result;
+        }
     }
 
 

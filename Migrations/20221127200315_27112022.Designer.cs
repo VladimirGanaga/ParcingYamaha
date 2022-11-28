@@ -12,8 +12,8 @@ using ParcingYamaha;
 namespace ParcingYamaha.Migrations
 {
     [DbContext(typeof(SampleContext))]
-    [Migration("20221124192503_parts")]
-    partial class parts
+    [Migration("20221127200315_27112022")]
+    partial class _27112022
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,6 +96,9 @@ namespace ParcingYamaha.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("appSerial")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("chapter")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("modeldatacollectionID")

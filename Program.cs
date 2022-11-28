@@ -43,6 +43,10 @@ namespace ParcingYamaha
             }
 
             httpClient.Dispose();
+            Parts chkParts = new Parts();
+            chkParts.CheckEqualParts(context, "XTZ690-U");
+
+
             Console.WriteLine("Press any key to close");
             Console.ReadKey();
         
