@@ -71,6 +71,7 @@ namespace ParcingYamaha
                             part.modeldatacollectionID = dm.Id;
                             part.chapter = selectedModel.figName;
                             part.chapterID = selectedModel.figNo;
+                            part.partNewsFileURL = selectedModel.illustFileURL;
                             context.Partsdatacollection.Update(part);
                             context.SaveChanges();
                         }
