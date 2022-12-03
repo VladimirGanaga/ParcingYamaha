@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ParcingYamaha.ClassesDB;
+
+
 
 
 namespace ParcingYamaha
@@ -11,7 +9,7 @@ namespace ParcingYamaha
     /// <summary>
     /// Класс контекста для работы Entity framework
     /// </summary>
-    public class SampleContext : DbContext
+    public class MotoContext : DbContext
     {
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -20,14 +18,15 @@ namespace ParcingYamaha
         }
 
 
-        public SampleContext()
+        public MotoContext()
         {
             //Database.EnsureDeleted();   // удаляем бд со старой схемой
             //Database.EnsureCreated();   // создаем бд с новой схемой
         }
 
-        public DbSet<Modeldatacollection> Modeldatacollection { get; set; }
-        public DbSet<Partsdatacollection> Partsdatacollection { get; set; } = null!;
+        public DbSet<ModelsDB> ModelDB { get; set; }
+        public DbSet<ChaptersDB> ChapterDB { get; set; } = null!;
+        public DbSet<PartsDB> PartDB { get; set; } = null!;
 
     }
 }

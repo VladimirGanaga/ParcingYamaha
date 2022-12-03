@@ -26,27 +26,24 @@ namespace ParcingYamaha
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("Parcing Yamaha");
 
-            SampleContext context = new SampleContext();
+            MotoContext context = new MotoContext();
             HttpClient httpClient = new HttpClient();
             Console.WriteLine("Press 1 for run parcing all models to sql or press Enter to skip");
             if (Console.ReadLine() == "1")
                 { 
-                ParcingSite parcing = new ParcingSite();
+                ParcingModels parcing = new ParcingModels();
                 await parcing.ParceModelsAsync(httpClient, context);
                 }
             Console.WriteLine("Enter model name to parce parts or press Enter key to skip");
             string? input = Console.ReadLine();
             if (!input.IsNullOrEmpty())
             {
-                Parts parts = new Parts();
-                await parts.GetParts(httpClient, context, input);
+                ParcingParts parts = new ParcingParts();
+                await parts.GetParts(httpClient,  input);
             }
 
             httpClient.Dispose();
-            //Parts chkParts = new Parts();
-            //chkParts.CheckEqualParts(context, "XTZ690-U");
-
-
+            
             Console.WriteLine("Press any key to close");
             Console.ReadKey();
         

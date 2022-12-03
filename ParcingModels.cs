@@ -7,16 +7,17 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using ParcingYamaha.ClassesDB;
 
 namespace ParcingYamaha
 {
     /// <summary>
     /// Класс для парсинга всех моделей мотоциклов с сайта и сохранения в БД SQL
     /// </summary>
-    internal class ParcingSite 
+    internal class ParcingModels 
     {
 
-        public async Task ParceModelsAsync(HttpClient httpClient, SampleContext context)
+        public async Task ParceModelsAsync(HttpClient httpClient, MotoContext context)
         {
             int count=0;
 
@@ -30,7 +31,7 @@ namespace ParcingYamaha
             };
 
 
-            context.Modeldatacollection.RemoveRange(context.Modeldatacollection);
+            context.ModelDB.RemoveRange(context.ModelDB);
             context.SaveChanges();
 
 
@@ -78,10 +79,17 @@ namespace ParcingYamaha
                         {
                             count++;
                             Console.WriteLine($"Счетчик: {count}. Год: {model.modelBaseCode}, productNo: {model.productNo}, calledCode: {model.calledCode}, modelName: {model.modelName}, colorName: {model.colorName}, modelName: {model.modelName}");
+                            ModelsDB modelDB = new ModelsDB();
+                            modelDB.modelName=model.modelName;
+                            modelDB.nickname = model.nickname;
+                            modelDB.modelYear = model.modelYear;
+                            modelDB.modelTypeCode = model.modelTypeCode;
+                            modelDB.colorType = model.colorType;
+                            modelDB.colorName = model.colorName;
+                            modelDB.prodPictureFileURL = model.prodPictureFileURL;
+                            modelDB.productNo = model.productNo;
+                            context.ModelDB.Add(modelDB);
 
-                            
-                            context.Modeldatacollection.Add(model);
-                            
 
 
                         }

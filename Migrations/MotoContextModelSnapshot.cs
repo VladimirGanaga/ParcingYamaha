@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ParcingYamaha;
 
@@ -11,12 +10,10 @@ using ParcingYamaha;
 
 namespace ParcingYamaha.Migrations
 {
-    [DbContext(typeof(SampleContext))]
-    [Migration("20221128190527_addChapterID")]
-    partial class addChapterID
+    [DbContext(typeof(MotoContext))]
+    partial class MotoContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +22,7 @@ namespace ParcingYamaha.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ParcingYamaha.Modeldatacollection", b =>
+            modelBuilder.Entity("ParcingYamaha.ClassesDB.ChaptersDB", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,19 +30,37 @@ namespace ParcingYamaha.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("calledCode")
+                    b.Property<int>("ModelsDBID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("chapter")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("chapterID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("partFile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModelsDBID");
+
+                    b.ToTable("ChapterDB");
+                });
+
+            modelBuilder.Entity("ParcingYamaha.ClassesDB.ModelsDB", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("colorName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("colorType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("modelBaseCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("modelComment")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("modelName")
@@ -62,32 +77,19 @@ namespace ParcingYamaha.Migrations
                     b.Property<string>("nickname")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("prodCategory")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("prodPictureFileURL")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("prodPictureNo")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("productNo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("releaseYymm")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("vinNoSearch")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Modeldatacollection");
+                    b.ToTable("ModelDB");
                 });
 
-            modelBuilder.Entity("ParcingYamaha.Partsdatacollection", b =>
+            modelBuilder.Entity("ParcingYamaha.ClassesDB.PartsDB", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -95,23 +97,14 @@ namespace ParcingYamaha.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("appSerial")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("chapterDBId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("chapter")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("chapterID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("modeldatacollectionID")
+                    b.Property<int>("chapterID")
                         .HasColumnType("int");
 
                     b.Property<string>("partName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("partNewsFileURL")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("partNo")
@@ -124,29 +117,31 @@ namespace ParcingYamaha.Migrations
                     b.Property<string>("refNo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("remarks")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("selectableId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("modeldatacollectionID");
+                    b.HasIndex("chapterDBId");
 
-                    b.ToTable("Partsdatacollection");
+                    b.ToTable("PartDB");
                 });
 
-            modelBuilder.Entity("ParcingYamaha.Partsdatacollection", b =>
+            modelBuilder.Entity("ParcingYamaha.ClassesDB.ChaptersDB", b =>
                 {
-                    b.HasOne("ParcingYamaha.Modeldatacollection", "modeldatacollection")
+                    b.HasOne("ParcingYamaha.ClassesDB.ModelsDB", "modelsDB")
                         .WithMany()
-                        .HasForeignKey("modeldatacollectionID")
+                        .HasForeignKey("ModelsDBID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("modeldatacollection");
+                    b.Navigation("modelsDB");
+                });
+
+            modelBuilder.Entity("ParcingYamaha.ClassesDB.PartsDB", b =>
+                {
+                    b.HasOne("ParcingYamaha.ClassesDB.ChaptersDB", "chapterDB")
+                        .WithMany()
+                        .HasForeignKey("chapterDBId");
+
+                    b.Navigation("chapterDB");
                 });
 #pragma warning restore 612, 618
         }
