@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ParcingYamaha.ClassesDB;
-
-
+using Microsoft.Extensions.Configuration;
 
 
 namespace ParcingYamaha
@@ -11,17 +11,15 @@ namespace ParcingYamaha
     /// </summary>
     public class MotoContext : DbContext
     {
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=WIN10\\SQLEXPRESS;Database=Yamaha;Trusted_Connection=True;TrustServerCertificate=true;");
+            optionsBuilder.UseSqlServer("Data Source=DESKTOP-34RSAGO\\SQLEXPRESS;Initial Catalog=Yamaha;Trusted_Connection=True;TrustServerCertificate=true");
         }
 
 
         public MotoContext()
         {
-            //Database.EnsureDeleted();   // удаляем бд со старой схемой
-            //Database.EnsureCreated();   // создаем бд с новой схемой
+            
         }
 
         public DbSet<ModelsDB> ModelDB { get; set; }

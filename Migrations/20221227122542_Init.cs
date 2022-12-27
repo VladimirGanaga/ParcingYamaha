@@ -5,7 +5,7 @@
 namespace ParcingYamaha.Migrations
 {
     /// <inheritdoc />
-    public partial class newDB : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,7 @@ namespace ParcingYamaha.Migrations
                     modelName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     modelYear = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     modelTypeCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    productNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    productNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     colorType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     colorName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },

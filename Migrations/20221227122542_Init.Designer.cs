@@ -12,15 +12,15 @@ using ParcingYamaha;
 namespace ParcingYamaha.Migrations
 {
     [DbContext(typeof(MotoContext))]
-    [Migration("20221202213345_newDB")]
-    partial class newDB
+    [Migration("20221227122542_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("ProductVersion", "7.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -85,7 +85,6 @@ namespace ParcingYamaha.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("productNo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
