@@ -9,7 +9,6 @@ namespace ParcingYamaha
 {
     internal class Program
     {
-
         static async Task Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -30,12 +29,7 @@ namespace ParcingYamaha
 
            await serviceProvider
            .GetService<App>().Start();
-
-
         }
-
-
-
         public class App
         {
             ParcingModels parcingModels;
@@ -61,8 +55,7 @@ namespace ParcingYamaha
                 {
                     await parcingParts.GetParts(input);
                 }
-
-                
+                           
 
                 Console.WriteLine("Press any key to close");
                 Console.ReadKey();

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using ParcingYamaha.Dtos;
 using ParcingYamaha.Models;
 using ParcingYamaha.Networks;
@@ -33,11 +32,6 @@ namespace ParcingYamaha.Services
             _context.ChapterDB.RemoveRange(_context.ChapterDB);
             _context.PartDB.RemoveRange(_context.PartDB);
             _context.SaveChanges();
-            var jsonSettings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            };
-
 
             var desiredModelsFromBase = _context.ModelDB.Where(dm => dm.modelName == desiredModel).ToList();
             if (desiredModelsFromBase.IsNullOrEmpty())
@@ -47,7 +41,6 @@ namespace ParcingYamaha.Services
                 {
                     var complexModel = desiredModel.Split(" - ");
                     desiredModelsFromBase = _context.ModelDB.Where(dm => dm.modelName == complexModel[1]).ToList();
-
                 }
             }
 
@@ -58,21 +51,15 @@ namespace ParcingYamaha.Services
                     Console.WriteLine($"Модель {dm.modelName}, Никнэйм ({dm.nickname})");
 
                     var stringContetn = $"{{\"productId\":\"10\",\"modelBaseCode\":\"\",\"modelTypeCode\":\"{dm.modelTypeCode}\",\"modelYear\":\"{dm.modelYear}\",\"productNo\":\"{dm.productNo}\",\"colorType\":\"{dm.colorType}\",\"modelName\":\"{dm.modelName}\",\"prodCategory\":\"10\",\"calledCode\":\"2\",\"vinNoSearch\":\"false\",\"catalogLangId\":\"02\",\"baseCode\":\"7306\",\"langId\":\"92\",\"userGroupCode\":\"BTOC\",\"greyModelSign\":false}}";
-                    var answer = await postrequest.PostRequest("https://parts.yamaha-motor.co.jp/ypec_b2c/services/html5/catalog_index/", stringContetn);
-                    var selectedModels = JsonConvert.DeserializeObject<SelectedModel>(answer, jsonSettings);
+                    var selectedModels = await postrequest.PostRequest<SelectedModel>("https://parts.yamaha-motor.co.jp/ypec_b2c/services/html5/catalog_index/", stringContetn);
                     foreach (var selectedModel in selectedModels.figDataCollection)
                     {
                         chaptersDB = _mapper.Map<ChaptersDB>(selectedModel);
                         chaptersDB.ModelsDBID = dm.Id;
-                        
                         _context.ChapterDB.Add(chaptersDB);
                         _context.SaveChanges();
-                        
-
-
                         stringContetn = $"{{\"productId\":\"10\",\"modelBaseCode\":\"\",\"modelTypeCode\":\"{dm.modelTypeCode}\",\"modelYear\":\"{dm.modelYear}\",\"productNo\":\"{dm.productNo}\",\"colorType\":\"{dm.colorType}\",\"modelName\":\"{dm.modelName}\",\"vinNoSearch\":\"false\",\"figNo\":\"{selectedModel.figNo}\",\"figBranchNo\":\"{selectedModel.figBranchNo}\",\"catalogNo\":\"{selectedModels.catalogNo}\",\"illustNo\":\"{selectedModel.illustNo}\",\"catalogLangId\":\"02\",\"baseCode\":\"7306\",\"langId\":\"92\",\"userGroupCode\":\"BTOC\",\"domOvsId\":\"2\",\"greyModelSign\":false,\"cataPBaseCode\":\"7451\",\"currencyCode\":\"GBP\"}}";
-                        answer = await postrequest.PostRequest("https://parts.yamaha-motor.co.jp/ypec_b2c/services/html5/catalog_text/", stringContetn);
-                        var partsCollection = JsonConvert.DeserializeObject<SelectParts>(answer, jsonSettings);
+                        var partsCollection = await postrequest.PostRequest<SelectParts>("https://parts.yamaha-motor.co.jp/ypec_b2c/services/html5/catalog_text/", stringContetn);
                         foreach (var part in partsCollection.partsDataCollection)
                         {
                             Console.WriteLine($"Chapter: {selectedModel.figName}, partNo: {part.partNo}, partName: {part.partName}");
@@ -87,9 +74,6 @@ namespace ParcingYamaha.Services
                 }
             }
         }
-
-
-
     }
 }
 
