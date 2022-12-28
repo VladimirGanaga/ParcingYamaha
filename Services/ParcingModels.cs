@@ -1,34 +1,32 @@
-﻿using Azure.Core;
-using Azure;
+﻿using AutoMapper;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using ParcingYamaha.Dtos;
 using ParcingYamaha.Models;
 using ParcingYamaha.Networks;
+using System;
 
-namespace ParcingYamaha
+namespace ParcingYamaha.Services
 {
     /// <summary>
     /// Класс для парсинга всех моделей мотоциклов с сайта и сохранения в БД SQL
     /// </summary>
-    internal class ParcingModels 
+    internal class ParcingModels
     {
         MotoContext _context;
         NetworkService postrequest;
-        public ParcingModels(MotoContext context, NetworkService postrequest)
+        ModelsDB modelDB;
+        private readonly IMapper _mapper;
+        public ParcingModels(MotoContext context, NetworkService postrequest, ModelsDB modelDB, IMapper mapper)
         {
             _context = context;
             this.postrequest = postrequest;
+            this.modelDB = modelDB;
+            _mapper = mapper;
         }
 
         public async Task ParceModelsAsync()
         {
-            int count=0;
+            int count = 0;
             var jsonSettings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
@@ -38,23 +36,23 @@ namespace ParcingYamaha
 
             var stringContetn = "{\"baseCode\":\"7306\",\"langId\":\"92\"}";
             var answer = await postrequest.PostRequest("https://parts.yamaha-motor.co.jp/ypec_b2c/services/html5/product_list/", stringContetn);
-            var engineSizeListAll = JsonConvert.DeserializeObject<JsondeserializeClasses>( answer, jsonSettings);
+            var engineSizeListAll = JsonConvert.DeserializeObject<JsondeserializeClasses>(answer, jsonSettings);
             var engineSizeList = engineSizeListAll.displacementDataCollection.Where(x => x.productId == "10").ToList();
 
             foreach (var engine in engineSizeList)
             {
                 Console.WriteLine($"объем: {engine.displacement}, номер: {engine.displacementType}, ИД продукта: {engine.productId}");
-               
+
                 if (int.Parse(engine.displacementType) != 0)
                 {
                     stringContetn = $"{{ \"productId\":\"10\",\"displacementType\":\"{engine.displacementType}\",\"baseCode\":\"7306\",\"langId\":\"92\"}}";
-                    answer = await postrequest.PostRequest("https://parts.yamaha-motor.co.jp/ypec_b2c/services/html5/model_name_list/", stringContetn); 
+                    answer = await postrequest.PostRequest("https://parts.yamaha-motor.co.jp/ypec_b2c/services/html5/model_name_list/", stringContetn);
                 }
                 var models = JsonConvert.DeserializeObject<Model>(answer, jsonSettings);
                 foreach (var bikeModel in models.modelNameDataCollection)
                 {
                     Console.WriteLine(bikeModel.modelName);
-                    
+
                     stringContetn = $"{{\"productId\":\"10\",\"modelName\":\"{bikeModel.modelName}\",\"nickname\":\"{bikeModel.nickname}\",\"baseCode\":\"7306\",\"langId\":\"92\",\"userGroupCode\":\"BTOC\",\"destination\":\"GBR\",\"destGroupCode\":\"EURS\",\"domOvsId\":\"2\"}}";
                     answer = await postrequest.PostRequest("https://parts.yamaha-motor.co.jp/ypec_b2c/services/html5/model_year_list/", stringContetn);
                     var yearModels = JsonConvert.DeserializeObject<Modelyeardata>(answer, jsonSettings);
@@ -69,15 +67,7 @@ namespace ParcingYamaha
                         {
                             count++;
                             Console.WriteLine($"Счетчик: {count}. Год: {model.modelBaseCode}, productNo: {model.productNo}, calledCode: {model.calledCode}, modelName: {model.modelName}, colorName: {model.colorName}, modelName: {model.modelName}");
-                            ModelsDB modelDB = new ModelsDB();
-                            modelDB.modelName=model.modelName;
-                            modelDB.nickname = model.nickname;
-                            modelDB.modelYear = model.modelYear;
-                            modelDB.modelTypeCode = model.modelTypeCode;
-                            modelDB.colorType = model.colorType;
-                            modelDB.colorName = model.colorName;
-                            modelDB.prodPictureFileURL = model.prodPictureFileURL;
-                            modelDB.productNo = model.productNo;
+                            modelDB =  _mapper.Map<ModelsDB>(model);
                             _context.ModelDB.Add(modelDB);
 
                         }
@@ -86,7 +76,7 @@ namespace ParcingYamaha
                 }
                 _context.SaveChanges();
             }
-            
+
         }
 
     }

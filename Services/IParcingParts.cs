@@ -1,4 +1,4 @@
-﻿namespace ParcingYamaha
+﻿namespace ParcingYamaha.Services
 {
     internal interface IParcingParts
     {

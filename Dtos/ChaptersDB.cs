@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace ParcingYamaha.Dtos
 {
     public class ChaptersDB
     {
+        
         public int Id { get; set; }
         public int ModelsDBID { get; set; }
         public ModelsDB? modelsDB { get; set; }

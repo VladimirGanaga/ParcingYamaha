@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration;
 using ParcingYamaha.Dtos;
 
-namespace ParcingYamaha
+namespace ParcingYamaha.Services
 {
     /// <summary>
     /// Класс контекста для работы Entity framework
@@ -20,7 +18,7 @@ namespace ParcingYamaha
 
         //public MotoContext()
         //{
-            
+
         //}
 
         public MotoContext(DbContextOptions options) : base(options)

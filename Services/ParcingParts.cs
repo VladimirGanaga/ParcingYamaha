@@ -1,18 +1,12 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using AutoMapper;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Http;
-using ParcingYamaha;
 using ParcingYamaha.Dtos;
 using ParcingYamaha.Models;
 using ParcingYamaha.Networks;
+using ParcingYamaha.Services;
 
-namespace ParcingYamaha
+namespace ParcingYamaha.Services
 {
 
     /// <summary>
@@ -22,10 +16,16 @@ namespace ParcingYamaha
     {
         MotoContext _context;
         NetworkService postrequest;
-        public ParcingPartsService(MotoContext motoContext, NetworkService postrequest)
+        ChaptersDB chaptersDB;
+        PartsDB partsDB;
+        private readonly IMapper _mapper;
+        public ParcingPartsService(MotoContext motoContext, NetworkService postrequest, ChaptersDB chaptersDB, PartsDB partsDB, IMapper mapper)
         {
             _context = motoContext;
             this.postrequest = postrequest;
+            this.chaptersDB = chaptersDB;
+            this.partsDB = partsDB;
+            _mapper = mapper;
         }
 
         public async Task GetParts(string desiredModel)
@@ -37,7 +37,7 @@ namespace ParcingYamaha
             {
                 NullValueHandling = NullValueHandling.Ignore
             };
-            
+
 
             var desiredModelsFromBase = _context.ModelDB.Where(dm => dm.modelName == desiredModel).ToList();
             if (desiredModelsFromBase.IsNullOrEmpty())
@@ -62,13 +62,13 @@ namespace ParcingYamaha
                     var selectedModels = JsonConvert.DeserializeObject<SelectedModel>(answer, jsonSettings);
                     foreach (var selectedModel in selectedModels.figDataCollection)
                     {
-                        ChaptersDB chaptersDB = new ChaptersDB();
+                        chaptersDB = _mapper.Map<ChaptersDB>(selectedModel);
                         chaptersDB.ModelsDBID = dm.Id;
-                        chaptersDB.partFile = selectedModel.illustFileURL;
-                        chaptersDB.chapter = selectedModel.figName;
-                        chaptersDB.chapterID = selectedModel.figNo;
+                        
                         _context.ChapterDB.Add(chaptersDB);
                         _context.SaveChanges();
+                        
+
 
                         stringContetn = $"{{\"productId\":\"10\",\"modelBaseCode\":\"\",\"modelTypeCode\":\"{dm.modelTypeCode}\",\"modelYear\":\"{dm.modelYear}\",\"productNo\":\"{dm.productNo}\",\"colorType\":\"{dm.colorType}\",\"modelName\":\"{dm.modelName}\",\"vinNoSearch\":\"false\",\"figNo\":\"{selectedModel.figNo}\",\"figBranchNo\":\"{selectedModel.figBranchNo}\",\"catalogNo\":\"{selectedModels.catalogNo}\",\"illustNo\":\"{selectedModel.illustNo}\",\"catalogLangId\":\"02\",\"baseCode\":\"7306\",\"langId\":\"92\",\"userGroupCode\":\"BTOC\",\"domOvsId\":\"2\",\"greyModelSign\":false,\"cataPBaseCode\":\"7451\",\"currencyCode\":\"GBP\"}}";
                         answer = await postrequest.PostRequest("https://parts.yamaha-motor.co.jp/ypec_b2c/services/html5/catalog_text/", stringContetn);
@@ -76,15 +76,13 @@ namespace ParcingYamaha
                         foreach (var part in partsCollection.partsDataCollection)
                         {
                             Console.WriteLine($"Chapter: {selectedModel.figName}, partNo: {part.partNo}, partName: {part.partName}");
-                            PartsDB partsDB = new PartsDB();
+                            partsDB = _mapper.Map<PartsDB>(part);
                             partsDB.chapterID = chaptersDB.Id;
-                            partsDB.partNo = part.partNo;
-                            partsDB.partName = part.partName;
-                            partsDB.quantity = part.quantity;
-                            partsDB.refNo = part.refNo;
-                            _context.PartDB.Update(partsDB);
+                            _context.PartDB.Add(partsDB);
                             _context.SaveChanges();
+                            
                         }
+                        
                     }
                 }
             }
@@ -108,7 +106,7 @@ internal class ParcingParts1 : IParcingParts
     public async Task GetParts(string desiredModel)
     {
         Console.WriteLine(11123);
-        
+
     }
 
 
