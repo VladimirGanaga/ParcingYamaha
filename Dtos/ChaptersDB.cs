@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ParcingYamaha.ClassesDB
+namespace ParcingYamaha.Dtos
 {
     public class ChaptersDB
     {
@@ -14,6 +14,6 @@ namespace ParcingYamaha.ClassesDB
         public string? partFile { get; set; }
         public string? chapter { get; set; }
         public string? chapterID { get; set; }
-        
+
     }
 }

@@ -8,7 +8,7 @@ using System.Xml.Linq;
 /// <summary>
 ///класс для десериализации получаемых данных с сайта
 /// </summary>
-namespace ParcingYamaha
+namespace ParcingYamaha.Models
 {
 
     public class JsondeserializeClasses
@@ -176,7 +176,7 @@ namespace ParcingYamaha
     }
 
     public class Partsdatacollection
-    {   
+    {
         public int Id { get; set; }
         public int modeldatacollectionID { get; set; }
         public Modeldatacollection? modeldatacollection { get; set; }
@@ -231,10 +231,10 @@ namespace ParcingYamaha
     }
 
 
-    
 
 
-    
+
+
 }
 
 

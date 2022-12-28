@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ParcingYamaha.ClassesDB
+namespace ParcingYamaha.Dtos
 {
     public class ModelsDB
     {
@@ -17,6 +17,6 @@ namespace ParcingYamaha.ClassesDB
         public string? productNo { get; set; }
         public string? colorType { get; set; }
         public string? colorName { get; set; }
-        
+
     }
 }

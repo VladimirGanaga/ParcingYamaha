@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using ParcingYamaha.ClassesDB;
 using Microsoft.Extensions.Configuration;
-
+using ParcingYamaha.Dtos;
 
 namespace ParcingYamaha
 {
@@ -10,16 +9,22 @@ namespace ParcingYamaha
     /// Класс контекста для работы Entity framework
     /// </summary>
     public class MotoContext : DbContext
+
+
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Data Source=DESKTOP-34RSAGO\\SQLEXPRESS;Initial Catalog=Yamaha;Trusted_Connection=True;TrustServerCertificate=true");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Data Source=DESKTOP-34RSAGO\\SQLEXPRESS;Initial Catalog=Yamaha;Trusted_Connection=True;TrustServerCertificate=true");
+        //}
 
 
-        public MotoContext()
-        {
+        //public MotoContext()
+        //{
             
+        //}
+
+        public MotoContext(DbContextOptions options) : base(options)
+        {
         }
 
         public DbSet<ModelsDB> ModelDB { get; set; }

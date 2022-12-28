@@ -5,13 +5,20 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ParcingYamaha
+namespace ParcingYamaha.Networks
 {
     public class NetworkService
     {
-        public async Task<string> PostRequest(string requestURL, string stringContent, HttpClient httpClient) 
+        HttpClient httpClient;
+
+        public NetworkService(HttpClient httpClient)
         {
-            
+            this.httpClient = httpClient;
+        }
+
+        public async Task<string> PostRequest(string requestURL, string stringContent)
+        {
+
             var request = new HttpRequestMessage(HttpMethod.Post, requestURL);
             request.Content = new StringContent(stringContent, Encoding.UTF8, "application/json");
             request.Headers.Add("accept", "application/json, text/javascript, */*; q=0.01");
@@ -19,7 +26,7 @@ namespace ParcingYamaha
             var response = await httpClient.SendAsync(request);
             var answer = await response.Content.ReadAsStringAsync();
             return answer;
-            
+
         }
     }
 }
